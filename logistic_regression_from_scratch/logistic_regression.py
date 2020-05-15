@@ -55,6 +55,8 @@ class LogisticRegression:
         self.fitted = True
     
     def predict_proba(self, X):
+        if (not self.fitted):
+            return None
         X = self._add_ones(X)
         probabilities = np.zeros(X.shape[0])
         for i in range(X.shape[0]):
@@ -62,6 +64,8 @@ class LogisticRegression:
         return probabilities
     
     def predict(self, X, threshold=0.5):
+        if not self.fitted:
+            return None
         return (self.predict_proba(X) >= threshold).astype(int)
         
     
@@ -76,4 +80,5 @@ if __name__ == "__main__":
     X      = dataset.iloc[:,:-1].values
     target = dataset.target.values
     
+    # using ellipsoid kernel function: z = ax^2 + by^2
     utils.visualize_decision_boundary(dataset, lambda x,y: model.theta[0]*x**2 + model.theta[1]*y**2 + model.theta[2])
